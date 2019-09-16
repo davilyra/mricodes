@@ -1,0 +1,18 @@
+function res = mtimes(a,b)
+% res = mtimes(FT, x)
+%
+
+
+if a.adjoint
+    res = zeros(size(b,1),size(b,2));
+    for cc=1:a.Nc
+        res = res + conj(a.cmap(:,:,cc)).*ifft2c(a.kmask.*b(:,:,cc));
+    end
+    
+else
+    res = zeros(size(b,1),size(b,2),a.Nc);
+    for cc=1:a.Nc
+        res(:,:,cc) = a.kmask .* ( fft2c( a.cmap(:,:,cc) .* b ));
+    end
+end
+    
